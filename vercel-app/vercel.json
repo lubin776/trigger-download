@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/tvboxqq.zip",
+      "destination": "https://github.com/lubin776/0/releases/download/latest/tvboxqq.zip"
+    }
+  ]
+}
