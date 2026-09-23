@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-TVBox 伪装下载器（带网速监控）
-配置集中在「用户配置区」，无需外部传参。
+TVBox 伪装下载器（多文件版·带网速监控）
+所有配置由环境变量传入，不在脚本内写死。
 """
 import os
 import sys
@@ -10,14 +10,35 @@ import time
 import zipfile
 import requests
 
-# ================== 用户配置区（改这里就行） ==================
-DOWNLOAD_URL = "https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip"
-SAVE_DIR = "zip"          # 保存目录（仓库根下的 zip/）
-FILENAME = "tvboxX4.zip"  # 文件名
-# FILENAME = time.strftime("tvbox_%Y%m%d_%H%M%S.zip")  # 按时间命名就开这个
+# ================== 配置区（全部从环境变量读取） ==================
+# JOBS 格式: "文件名|下载地址;文件名|下载地址;..."
+# 例如: "tvboxX4.zip|https://xxx/a.zip;tvboxqq.zip|https://xxx/b.zip"
+JOBS = os.getenv("JOBS", "").strip()
+SAVE_DIR = os.getenv("SAVE_DIR", "zip").strip()
 EXTRACT = os.getenv("EXTRACT", "").lower() in ("1", "true", "yes")
-# ============================================================
-SAVE_PATH = os.path.join(SAVE_DIR, FILENAME)
+# ==================================================================
+
+
+def parse_jobs(jobs_str):
+    """把 '文件名|地址;文件名|地址' 解析成 [(filename, url), ...]"""
+    jobs = []
+    if not jobs_str:
+        return jobs
+    for item in jobs_str.split(";"):
+        item = item.strip()
+        if not item:
+            continue
+        if "|" not in item:
+            print(f"  ⚠️ 跳过无效配置: {item}")
+            continue
+        filename, url = item.split("|", 1)
+        filename = filename.strip()
+        url = url.strip()
+        if not filename or not url:
+            print(f"  ⚠️ 跳过无效配置: {item}")
+            continue
+        jobs.append((filename, url))
+    return jobs
 
 
 def download_file(url, save_path, extract=False):
@@ -31,7 +52,7 @@ def download_file(url, save_path, extract=False):
         os.makedirs(save_dir, exist_ok=True)
 
     print("=" * 60)
-    print("  TVBox 伪装下载器（带网速监控）")
+    print("  TVBox 伪装下载器（多文件版）")
     print("=" * 60)
     print(f"  链接: {url}")
     print(f"  保存: {save_path}")
@@ -80,8 +101,35 @@ def download_file(url, save_path, extract=False):
         return True
     except Exception as e:
         print(f"\n  ❌ 下载失败: {e}")
+        return False
+
+
+def main():
+    jobs = parse_jobs(JOBS)
+    if not jobs:
+        print("❌ 未配置任何下载任务 (JOBS 为空)")
+        sys.exit(1)
+
+    print(f"📋 共 {len(jobs)} 个任务\n")
+
+    ok, fail = 0, 0
+    for idx, (filename, url) in enumerate(jobs, 1):
+        print(f"\n{'#' * 60}")
+        print(f"# 任务 {idx}/{len(jobs)}: {filename}")
+        print(f"{'#' * 60}")
+        save_path = os.path.join(SAVE_DIR, filename)
+        if download_file(url, save_path, EXTRACT):
+            ok += 1
+        else:
+            fail += 1
+
+    print(f"\n{'=' * 60}")
+    print(f"  汇总: 成功 {ok} / 失败 {fail} / 共 {len(jobs)}")
+    print(f"{'=' * 60}")
+
+    if fail > 0:
         sys.exit(1)
 
 
 if __name__ == "__main__":
-    download_file(DOWNLOAD_URL, SAVE_PATH, EXTRACT)
+    main()
