@@ -1,12 +1,16 @@
 name: "触发下载"
 
-'on':
+on:
   workflow_dispatch:
     inputs:
       extract:
         description: '是否解压 (true/false)'
         required: false
         default: 'false'
+      jobs:
+        description: '下载任务，格式: 文件名|地址;文件名|地址'
+        required: false
+        default: 'tvboxX4.zip|https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip,tvboxqq.zip|https://mpimg.cn/down.php/c940f6ccf420663892779382fdf2894e.zip'
 
 permissions:
   contents: write
@@ -29,14 +33,22 @@ jobs:
       - name: Run downloader
         env:
           EXTRACT: ${{ github.event.inputs.extract }}
+          SAVE_DIR: zip
+          # 多个任务用分号 ; 分隔，格式 文件名|地址
+          JOBS: ${{ github.event.inputs.jobs }}
         run: python python/download.py
+
+      - name: Delete old release (latest)
+        run: gh release delete latest --yes --cleanup-tag || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload to GitHub Release (latest)
         uses: softprops/action-gh-release@v1
         with:
           tag_name: latest
           name: "Latest Build"
-          files: zip/tvboxqq.zip
+          files: zip/*.zip
           body: "自动构建于 ${{ github.run_number }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -46,4 +58,4 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add zip/
-          git diff --cached --quiet || (git commit -m "chore: 手动下载更新 $(date +'%Y-%m-%d %H:%M')" && git push)
+          git diff --cached --quiet || (git commit -m "chore: 下载更新 $(date +'%Y-%m-%d %H:%M')" && git push)
