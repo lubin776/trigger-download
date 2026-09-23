@@ -11,9 +11,9 @@ import zipfile
 import requests
 
 # ================== 用户配置区（改这里就行） ==================
-DOWNLOAD_URL = "https://mpimg.cn/down.php/c940f6ccf420663892779382fdf2894e.zip"
+DOWNLOAD_URL = "https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip"
 SAVE_DIR = "zip"          # 保存目录（仓库根下的 zip/）
-FILENAME = "tvboxqq.zip"  # 文件名
+FILENAME = "tvboxX4.zip"  # 文件名
 # FILENAME = time.strftime("tvbox_%Y%m%d_%H%M%S.zip")  # 按时间命名就开这个
 EXTRACT = os.getenv("EXTRACT", "").lower() in ("1", "true", "yes")
 # ============================================================
