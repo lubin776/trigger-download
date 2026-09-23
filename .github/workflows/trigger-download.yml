@@ -10,7 +10,7 @@ on:
       jobs:
         description: '下载任务，格式: 文件名|地址;文件名|地址'
         required: false
-        default: 'tvboxX4.zip|https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip,tvboxqq.zip|https://mpimg.cn/down.php/c940f6ccf420663892779382fdf2894e.zip'
+        default: 'tvboxX4.zip|https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip'
 
 permissions:
   contents: write
