@@ -1,4 +1,4 @@
-name: "触发下载"
+name: "触发下载推送releases"
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
         with:
           tag_name: latest
           name: "Latest Build"
-          files: zip/*.zip
+          files: zip/*
           body: "自动构建于 ${{ github.run_number }}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
