@@ -10,7 +10,7 @@ on:
       jobs:
         description: '下载任务，格式: 文件名|地址;文件名|地址'
         required: false
-        default: 'tvboxX4.zip|https://mpimg.cn/down.php/29f6b16b1867bcfa26db9860df9c56e4.zip;tvboxqq.zip|https://mpimg.cn/down.php/c940f6ccf420663892779382fdf2894e.zip'
+        default: '接口大全_1.0.2.apk|https://mpimg.cn/down.php/fc3ec6736f40710f5fdefd3ae34ec9a1.apk'
 
 permissions:
   contents: write
