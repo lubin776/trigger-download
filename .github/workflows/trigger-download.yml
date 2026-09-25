@@ -10,7 +10,7 @@ on:
       jobs:
         description: '下载任务，格式: 文件名|地址;文件名|地址'
         required: false
-        default: '接口大全1.0.2.apk|https://mpimg.cn/down.php/fc3ec6736f40710f5fdefd3ae34ec9a1.apk'
+        default: 'jiekoudaquan1.0.2.apk|https://mpimg.cn/down.php/fc3ec6736f40710f5fdefd3ae34ec9a1.apk'
 
 permissions:
   contents: write
