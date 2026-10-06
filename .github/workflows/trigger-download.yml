@@ -10,7 +10,7 @@ on:
       jobs:
         description: '下载任务，格式: 文件名|地址;文件名|地址'
         required: false
-        default: 'jiekoudaquan1.0.2.apk|https://mpimg.cn/down.php/fc3ec6736f40710f5fdefd3ae34ec9a1.apk'
+        default: 'jiekoudaquan1.0.4.apk|https://mpimg.cn/down.php/0181c5c501b376b22258f30c94cda256.apk;tvboxqq.zip|https://mpimg.cn/down.php/5bb11930273a565dfddac2f9877709da.zip;tvboxX4.zip|https://mpimg.cn/down.php/5bb11930273a565dfddac2f9877709da.zip'
 
 permissions:
   contents: write
